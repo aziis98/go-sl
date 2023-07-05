@@ -16,7 +16,7 @@ Install this package with
 $ go get github.com/aziis98/go-sl
 ```
 
-### Simple Example
+### Simple Slots Example
 
 ```go
 // Define each service struct or interface with a corresponding slot
@@ -60,7 +60,7 @@ func main() {
 }
 ```
 
-### Medium Example
+### Medium Slots Example
 
 For example a `database` module / service can be defined as follows
 
@@ -98,7 +98,7 @@ func NewMockDatabase() *Mock {
 }
 
 func ConfigureMockDatabase(l *sl.ServiceLocator) (Database, error) {
-    config, err := sl.Use(l, config.Slot)
+    cfg, err := sl.Use(l, config.Slot)
     if err != nil {
         return nil, err
     }
@@ -116,6 +116,35 @@ func main() {
     ...
     sl.ProvideFunc(l, database.Slot, database.ConfigureMockDatabase)
     ...
+}
+```
+
+### Hooks Example
+
+```go
+func main() {
+    ...
+    sl.ProvideHook(l, router.ApiSlot, 
+        routes.UseAuthRoutes,
+        routes.UseUserRoutes,
+        routes.UseSearchRoutes,
+        routes.UsePostsRoutes,
+    )
+    ...
+}
+```
+
+```go
+package routes
+
+func UseAuthRoutes(l *sl.ServiceLocator, r chi.Router) error {
+    cfg := sl.MustUse(l, config.Slot)
+    db := sl.MustUse(l, database.Slot)
+
+    r.Post("/register", ...)
+    r.Post("/login", ...)
+
+    return nil
 }
 ```
 
