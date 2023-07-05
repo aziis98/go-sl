@@ -114,7 +114,7 @@ And then in the main call
 ```go
 func main() {
     ...
-    sl.ProvideFunc(l, database.Slot, ConfigureMockDatabase)
+    sl.ProvideFunc(l, database.Slot, database.ConfigureMockDatabase)
     ...
 }
 ```
