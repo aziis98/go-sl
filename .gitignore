@@ -1,0 +1,12 @@
+# Local files
+.env
+*.local*
+
+# Binaries
+bin/
+.out/
+out/
+dist/
+
+# Editors
+.vscode/
